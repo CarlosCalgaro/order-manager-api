@@ -18,6 +18,22 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
       - POSTGRES_USER=${POSTGRES_USER?Variable not set}
       - POSTGRES_DB=${POSTGRES_DB?Variable not set}
+    networks:
+      - db_network
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      # Access Adminer in your browser at http://localhost:8080
+      - "8080:8080"
+    environment:
+      # This variable tells Adminer the hostname of the database server
+      # The hostname should match the service name in the compose file
+      ADMINER_DEFAULT_SERVER: db
+    networks:
+      - db_network
+
   api:
     build:
       context: .
@@ -32,6 +48,12 @@ services:
     ports:
       - "8003:8000"
     command: ["uvicorn", "order_manager_api.main:app", "--host", "0.0.0.0"]
-
+    networks:
+      - db_network
 volumes:
   app-db-data:
+
+
+networks:
+  db_network:
+    driver: bridge
