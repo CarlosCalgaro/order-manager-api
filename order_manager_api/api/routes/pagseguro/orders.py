@@ -7,7 +7,7 @@ from order_manager_api.lib.adapters.pagseguro_order_adapter import PagSeguroOrde
 router = APIRouter(prefix="/orders/pagseguro", tags=["pagseguro_orders"])
 
 
-@router.post("/", response_model=OrderPublic)
+@router.post("", response_model=OrderPublic)
 def create_order(session: SessionDep, order_in: PagseguroOrderRequest):
     adapter = PagSeguroOrderAdapter(order_in)
     order = adapter.to_order()

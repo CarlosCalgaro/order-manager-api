@@ -47,6 +47,8 @@ services:
       - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER?Variable not set}:${POSTGRES_PASSWORD?Variable not set}@db:5432/${POSTGRES_DB?Variable not set}
     ports:
       - "8003:8000"
+    volumes:
+      - ./:/app/
     command: ["uvicorn", "order_manager_api.main:app", "--host", "0.0.0.0"]
     networks:
       - db_network
